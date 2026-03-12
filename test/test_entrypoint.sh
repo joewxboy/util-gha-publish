@@ -147,16 +147,16 @@ MOCK
 
   assert_success "publishes with valid inputs and mocked hzn" \
     bash -c '
-      export PATH="'"${mock_dir}"':${PATH}"
+      export PATH="$1:${PATH}"
       export INPUT_DEFINITION_FILE=valid_service.definition.json
       export INPUT_CONFIG_FILE=agent-install.cfg
       export INPUT_HZN_ORG_ID=testorg
       export INPUT_HZN_EXCHANGE_USER_AUTH=user:pass
-      export GITHUB_WORKSPACE="'"${FIXTURES_DIR}"'"
+      export GITHUB_WORKSPACE="$2"
       export GITHUB_OUTPUT=/dev/null
       export GITHUB_STEP_SUMMARY=/dev/null
-      bash "'"${PROJECT_DIR}/entrypoint.sh"'"
-    '
+      bash "$3/entrypoint.sh"
+    ' _ "${mock_dir}" "${FIXTURES_DIR}" "${PROJECT_DIR}"
 
   rm -rf "${mock_dir}"
 }
