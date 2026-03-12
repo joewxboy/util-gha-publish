@@ -1,0 +1,18 @@
+{
+  "org": "testorg",
+  "label": "Test Service",
+  "description": "A valid service definition for testing",
+  "url": "com.example.test-service",
+  "version": "1.0.0",
+  "arch": "amd64",
+  "sharable": "multiple",
+  "requiredServices": [],
+  "userInput": [],
+  "deployment": {
+    "services": {
+      "test-service": {
+        "image": "example.com/test-service:1.0.0"
+      }
+    }
+  }
+}

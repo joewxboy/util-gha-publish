@@ -1,0 +1,36 @@
+name: 'Publish to Open Horizon'
+description: 'Validates and publishes a service definition file to an Open Horizon management hub'
+author: 'josephpearson'
+
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'
+
+inputs:
+  definition_file:
+    description: 'Path to the service definition JSON file (e.g., service.definition.json)'
+    required: true
+  config_file:
+    description: 'Path to the Open Horizon agent configuration file (e.g., agent-install.cfg)'
+    required: true
+  hzn_org_id:
+    description: 'Open Horizon organization ID'
+    required: true
+  hzn_exchange_user_auth:
+    description: 'Open Horizon exchange authentication (e.g., iamapikey:<key> or user:password)'
+    required: true
+
+outputs:
+  service_url:
+    description: 'The published service URL identifier'
+  service_version:
+    description: 'The published service version'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    INPUT_DEFINITION_FILE: ${{ inputs.definition_file }}
+    INPUT_CONFIG_FILE: ${{ inputs.config_file }}
+    INPUT_HZN_ORG_ID: ${{ inputs.hzn_org_id }}
+    INPUT_HZN_EXCHANGE_USER_AUTH: ${{ inputs.hzn_exchange_user_auth }}

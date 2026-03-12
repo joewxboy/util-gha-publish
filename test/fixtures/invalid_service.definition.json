@@ -1,0 +1,4 @@
+{
+  "label": "Invalid Service",
+  "description": "Missing required fields: org, url, version, arch, deployment"
+}
