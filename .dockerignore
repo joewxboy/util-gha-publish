@@ -1,0 +1,9 @@
+.git/
+.github/
+test/
+AGENTS.md
+README.md
+LICENSE
+.gitignore
+.dockerignore
+.yamllint.yml

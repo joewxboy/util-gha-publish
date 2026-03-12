@@ -13,6 +13,7 @@ Docker-based GitHub Action that publishes Open Horizon service definition files 
 ├── entrypoint.sh           # Main script executed by the action
 ├── README.md               # Usage documentation for action consumers
 ├── LICENSE
+├── .yamllint.yml           # yamllint configuration (line-length: 120)
 ├── .github/
 │   └── workflows/
 │       └── ci.yml          # CI pipeline: lint, build, test
@@ -78,6 +79,13 @@ The CI workflow (`.github/workflows/ci.yml`) should run: shellcheck → hadolint
 - **Functions**: Use `function_name() { ... }` syntax (no `function` keyword)
 - **Local variables**: Declare with `local` inside functions
 - **ShellCheck compliance**: Zero warnings. Address directives only with justification comment
+- **ShellCheck directives**: Must be on their own line with no inline comments. Put justification on a separate comment line above. Example:
+  ```bash
+  # Justification: variables expand in the bash -c subshell
+  # shellcheck disable=SC2016
+  ```
+  **Wrong**: `# shellcheck disable=SC2016 -- reason` (shellcheck cannot parse inline comments after directives)
+- **`bash -c` and SC2016**: Variables inside `bash -c '...'` single-quoted blocks trigger SC2016 even when intentionally meant for subshell expansion. Prefer passing outer-shell variables as positional args (`bash -c '...$1...' _ "${var}"`) but suppress with `# shellcheck disable=SC2016` when subshell variables like `${PATH}` remain
 - **Line length**: 100 characters max
 
 ```bash
@@ -116,7 +124,7 @@ trap cleanup EXIT
 ### Dockerfile
 
 - **Base image**: Pin exact digest or version tag, never use `latest`
-- **hadolint compliance**: Zero warnings
+- **hadolint compliance**: Zero warnings. Use `# hadolint ignore=DLxxxx` for justified suppressions (e.g., DL3008 for utility packages when base image is version-pinned)
 - **Labels**: Include `org.opencontainers.image.*` labels
 - **User**: Do NOT use `USER` instruction — Docker actions need root for `GITHUB_WORKSPACE` access
 - **WORKDIR**: Do NOT set `WORKDIR` — GitHub auto-mounts the workspace
@@ -151,6 +159,10 @@ ENTRYPOINT ["/entrypoint.sh"]
 - 2-space indentation
 - No trailing whitespace
 - Use block scalars (`|`) for multi-line strings
+- All YAML files must start with `---` document marker
+- Quote the `on` key in GitHub Actions workflows (`"on":`) to avoid yamllint truthy warnings
+- Line length configured to 120 chars max via `.yamllint.yml` (default 80 is too restrictive for URLs and descriptions)
+- Break long URLs in `run:` blocks with shell line continuation (`\`)
 
 ## Open Horizon Specifics
 
