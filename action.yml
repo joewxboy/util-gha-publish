@@ -1,3 +1,4 @@
+---
 name: 'Publish to Open Horizon'
 description: 'Validates and publishes a service definition file to an Open Horizon management hub'
 author: 'josephpearson'
