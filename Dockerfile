@@ -5,6 +5,7 @@ LABEL org.opencontainers.image.description="Publishes Open Horizon service defin
 
 ARG HZN_CLI_VERSION=2.32.0-1759
 
+# hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates \
