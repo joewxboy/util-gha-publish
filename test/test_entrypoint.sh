@@ -145,6 +145,7 @@ exit 0
 MOCK
   chmod +x "${mock_dir}/hzn"
 
+  # shellcheck disable=SC2016 -- variables expand in the bash -c subshell, not the outer shell
   assert_success "publishes with valid inputs and mocked hzn" \
     bash -c '
       export PATH="$1:${PATH}"
